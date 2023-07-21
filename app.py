@@ -2,11 +2,11 @@ import streamlit as st
 
 st.set_page_config(
     page_icon=":goose:",
-    page_title="부지런한 거위",
+    page_title="부지런한 거위들",
     layout="wide",
 )
 st.write("""
-# 😎 부지런한 거위팀의 프로젝트
+# 😎 부지런한 거위들의 프로젝트
 """)
 
 st.write("""
