@@ -15,11 +15,11 @@ import streamlit as st
 
 st.set_page_config(
     page_icon=":goose:",
-    page_title="부지런한 거위",
+    page_title="부지런한 거위들",
     layout="wide",
 )
 st.write("""
-# 부지런한 거위팀의 데이터 분석 프로젝트
+# 부지런한 거위들의 데이터 분석 프로젝트
 """)
 
 data_reg = pd.read_csv('Regression_data.csv')
