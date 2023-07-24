@@ -16,3 +16,5 @@ st.write("""
 st.write("""
  팀원 : 강규욱, 배나연, 조윤서
 """)
+
+st.image('./gooses.png')
