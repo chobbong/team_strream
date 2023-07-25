@@ -4,10 +4,14 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
-st.write("""
+st.header("""
 # Multi-classification Analysis
+gradient-boosting & keras modeling
 """)
 
+st.write ("""
+## gradient-Boosting
+""")
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
@@ -49,7 +53,7 @@ classification_report_dict = classification_report(y_val_without.idxmax(axis=1),
 # Convert the classification report to a DataFrame
 classification_report_df = pd.DataFrame(classification_report_dict).transpose()
 
-st.write('Classification report:\n')
+st.write('gradient boosting result :\n')
 st.write(classification_report_df)
          
 
