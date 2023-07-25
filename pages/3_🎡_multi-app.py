@@ -23,7 +23,7 @@ df = user_input_features()
 st.subheader('User Input parameters')
 st.write(df)
 
-data = pd.read_csv('multi_classification_data.csv')
+data = pd.read_csv('./csv/multi_classification_data.csv')
 
 # Define the feature set 'X' and the target set 'y'
 X = data.iloc[:, :-7]
