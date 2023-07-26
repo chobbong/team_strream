@@ -64,6 +64,15 @@ if select_dataset == 'data-1':
         sns.heatmap(df.iloc[:,1:].corr().abs(), annot=True, cmap='Blues')
         plt.title('Pearson Corr', fontsize=15)
         st.pyplot(plt)
+    
+    st.write("""
+    - 4177개의 데이터, 결측치, 중복값 없음, ‘sex’ 컬럼이 범주형 데이터
+    - 데이터 분포 히스토그램 : 대부분 정규 분포, 약하게 skewed 분포된 특성들 있음
+    - 산점도 : 범주형 데이터인 성별을 제외하고, 모두 타겟 변수에 양의 영향
+    - 상관관계분석 : 다중공선성 문제 심각.
+    - 다중공선성(VIF) 검증 : Height 특성은 3.6, 그 외 특성은 17.5~109.8의 높은 다중공선성을 보임
+    - 박스플롯 : 데이터 이상치 문제 거의 없음
+    """)
 
 if select_dataset == 'data-2':
 
@@ -98,7 +107,14 @@ if select_dataset == 'data-2':
         plt.title('Pearson Corr', fontsize=15)
         st.pyplot(plt)
 
-
+    st.write("""
+    - row 17898개, 범주형 데이터, 중복, 결측치 없음
+    - 이상치 있는 컬럼 3개
+    - 타겟 클래스 비율이 9:1로 매우 심각함
+    - 데이터 분포 히스토그램 : 전체적으로 skewed data
+    - 상관관계분석 : 2개 세트의 특성들이 상관계수가 높으나, 나머지는 높지 않음
+    - 바이올린 플롯 : 특성별 클래스간 차이가 유의미하게 나타남 => 이상치가 오히려 클래스 간의 유의미한 차이를 만들고 있음
+    """)
 
 if select_dataset == 'data-3':
 
@@ -140,3 +156,11 @@ if select_dataset == 'data-3':
             
         plt.subplots_adjust(wspace=0.2, hspace=0.7)
         st.pyplot(plt)
+
+    st.write("""
+    - 데이터 1941개, 중복, 결측치 없음
+    - target변수 7개이며, class 비율이 2.8% 부터 34.7% 까지 존재
+    - 데이터 분포 히스토그램 : skewed data가 꽤 많음
+    - 상관관계 분석 : 상관관계 1인 컬럼들 존재
+    - 바이올린 플롯 : 클래스간 유의마한 데이터 분포 차이 발견 X, 이상치가 다수 존재
+    """)
