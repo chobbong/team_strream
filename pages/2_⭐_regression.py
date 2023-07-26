@@ -22,7 +22,7 @@ st.write("""
 # 부지런한 거위들의 데이터 분석 프로젝트
 """)
 
-data_reg = pd.read_csv('Regression_data.csv')
+data_reg = pd.read_csv('./csv/Regression_data.csv')
 # Separate the features and the target
 X_reg = data_reg.drop("Rings", axis=1)
 y_reg = data_reg["Rings"]
