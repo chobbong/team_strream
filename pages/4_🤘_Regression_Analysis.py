@@ -9,5 +9,5 @@ st.set_page_config(
     layout="wide",
 )
 
-data = pd.read_csv('./csv/multi_classification_data.csv')
+data = pd.read_csv('./csv/Regression_data.csv')
 walker = pyg.walk(data, env='Streamlit')
