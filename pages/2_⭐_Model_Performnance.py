@@ -97,13 +97,13 @@ if select_dataset == 'data-1':
       """)
       st.write("""
       **best params**   
-      'learning_rate': 0.02087425763287998   
-      'n_estimators': 1550  
-      'max_depth': 17    
-      'colsample_bytree': 0.5    
-      'l2': 10.670146505870857    
-      'l1': 0.0663394675391197     
-      'gamma': 9.015017136084957  
+      'learning_rate': 0   
+      'n_estimators': 0
+      'max_depth': 0   
+      'colsample_bytree': 0  
+      'l2': 0  
+      'l1':0    
+      'gamma': 0 
       """)
       st.write('#### rmse :', XGB_rmse) 
       st.write('#### acc :', XGB_acc) 
