@@ -342,16 +342,16 @@ if select_dataset == 'data-2':
    st.write('select_model == "XGBoost"')
    st.write("""
    #### best params :      
-   smote_k': 2,       
-   'enn_k': 6,     
-   'learning_rate': 0.03233685808565227,     
-   'n_estimators': 1200,     
-   'max_depth': 20,     
-   'colsample_bytree': 0.5,     
-   'l2': 0.004666963217784473,     
-   'l1': 0.002792083422830542,     
-   'gamma': 0.036934880241175236,     
-   'scale_pos_weight': 7.0    
+   smote_k': 0,       
+   'enn_k': 0,     
+   'learning_rate': 0.000,     
+   'n_estimators': 000000,     
+   'max_depth': 00,     
+   'colsample_bytree': 000,     
+   'l2': 0.00,     
+   'l1': 0.0,     
+   'gamma': 0.03,     
+   'scale_pos_weight': 00    
    """)
    accuracy = 0.9752
    st.write('#### accuracy :', accuracy) 
@@ -361,13 +361,13 @@ if select_dataset == 'data-3':
    st.write('select_model == "XGBoost"')
    st.write("""
    #### best params :        
-  'learning_rate': 0.07522487380833985,   
-  'n_estimators': 250,   
-  'max_depth': 4,   
-  'colsample_bytree': 0.6000000000000001,   
-  'l2': 0.001648272236870337,   
-  'l1': 0.01657588037413299,   
-  'gamma': 0.002792373320363197  
+  'learning_rate': 0,   
+  'n_estimators': 0,   
+  'max_depth': 0,   
+  'colsample_bytree': 0,   
+  'l2': 0,   
+  'l1': 0,   
+  'gamma': 0  
    """)
    bin_accuracy = 0.844
    multi_accuracy = 0.934
