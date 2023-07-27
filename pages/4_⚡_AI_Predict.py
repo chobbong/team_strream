@@ -99,7 +99,8 @@ def load_data2(df2=None, split=True):
     df를 입력하면 전처리만 진행
 
     전처리:
-    1. 수치형 표준화
+    .
+0    1. 수치형 표준화
 
     args:
         df1 : 전처리할 데이터프레임
