@@ -142,21 +142,21 @@ class Model:
             raise ValueError(f'model_num 이상. 입력값 : {self.model_num}')
             
         # 먼저 전처리기 불러오기
-        file_path_1 ='./data/'+name+'_ct.pkl'
-        if os.path.exists(file_path_1):
+        file_path_1 = './data/'+name+'_ct.pkl'
+        try:
             self.ct = joblib.load(file_path_1)
             print('전처리기 불러오기 성공')
-        else:
+        except:
             print('전처리기 불러오기 실패.. 학습진행')
             self.ct = self.load_data()[-1]
-            
+
         # 모델 불러오기
         file_path_model = './data/'+name+'_BestModel.pkl'
-        if os.path.exists(file_path_model):
+        try:
             self.model = joblib.load(file_path_model)
             self.params = self.model.get_params()
             print('모델 불러오기 성공')
-        else:
+        except:
             print('모델 불러오기 실패.. 학습진행')
             self.model, train_time = self.train()
             self.params = self.model.get_params()
@@ -166,6 +166,7 @@ class Model:
                 print(f'모델학습 완료. 소요시간 {train_time:.2f}')
             else:
                 print(f'모델학습 완료. 소요시간 {train_time*1000:.2f}ms')
+
 
 
 
@@ -388,11 +389,11 @@ class Model3(Model):
 
         # 모델2 불러오기
         file_path_model2 = './data/multi_BestModel2.pkl'
-        if os.path.exists(file_path_model2 ):
-            self.model2 = joblib.load(file_path_model2 )
-            self.params2 = self.model.get_params()
+        try:
+            self.model2 = joblib.load(file_path_model2)
+            self.params2 = self.model2.get_params()
             print('모델2 불러오기 성공')
-        else:
+        except:
             print('모델2 불러오기 실패.. 학습진행')
             self.model2, train_time = self.train(case=2)
             self.params2 = self.model2.get_params()
