@@ -242,15 +242,15 @@ class Model:
     # 각 모델에 맞는 데이터를 불러오는 함수
     @classmethod
     def load_data(cls, df=None, split=True):
-        match cls.model_num:
-            case 1:
-                return load_data1(df1=df, split=split)
-            case 2:
-                return load_data2(df2=df, split=split)
-            case 3:
-                return load_data3(df3=df, split=split)
-            case _:
-                raise ValueError(f'model_num 이상. 입력값 : {cls.model_num}')
+        
+        if cls.model_num == 1:
+            return load_data1(df1=df, split=split)
+        elif cls.model_num == 2:
+            return load_data2(df2=df, split=split)
+        elif cls.model_num == 3:
+            return load_data3(df3=df, split=split)
+        else:
+            raise ValueError(f'model_num 이상. 입력값 : {cls.model_num}')
             
 
     # 아예 파라미터를 새로 설정하려면 self.params = {..}
@@ -420,15 +420,14 @@ class Model:
         모델을 저장하는 함수
         """
         
-        match self.model_num:
-            case 1:
-                file_path = os.path.join(PATH, 'data/reg_BestModel.pkl')
-            case 2:
-                file_path = os.path.join(PATH, 'data/bin_BestModel.pkl')
-            case 3:
-                file_path = os.path.join(PATH, 'data/multi_BestModel.pkl')
-            case _:
-                raise ValueError(f'model_num 이상. 값 {self.model_num}')
+        if self.model_num == 1:
+            file_path = os.path.join(PATH, 'data/reg_BestModel.pkl')
+        elif self.model_num == 2:
+            file_path = os.path.join(PATH, 'data/bin_BestModel.pkl')
+        elif self.model_num == 3:
+            file_path = os.path.join(PATH, 'data/multi_BestModel.pkl')
+        else:
+            raise ValueError(f'model_num 이상. 값 {self.model_num}')
             
         joblib.dump(self.model, file_path)
 
