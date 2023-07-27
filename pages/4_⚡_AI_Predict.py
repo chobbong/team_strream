@@ -30,8 +30,6 @@ st.set_page_config(
 )
 
 
-PATH = os.path.dirname(__file__)
-
 
 # *중요! 각 csv파일은 무조건 data폴더 안에 있어야합니다.
 def load_data1(df1=None, split=True):
