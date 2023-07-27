@@ -1,20 +1,5 @@
-## ai_program.py 구조초안 ##
-
-# 각 데이터는 load_data 함수를 통해 불러올 수 있다.(전처리 포함)
-# 데이터를 plot_data 함수를 통해 웹에서 원하는 방식으로 표현
-# 필요시 검증데이터를 랜덤으로 생성할 수 있다. (VOC 반영)
-# 각 모델은 class의 인스턴스로 구현.
-# 모델 class는 train과 predict, performance와 save를 메소드로가지고, 파라미터를 속성으로 가진다.
-
-"""데이터 파이프라인
-1. 데이터 불러오기
-2. 모델인스턴스 생성 (이때 모델을 불러오지 못하면 자동학습)
-3. 학습된 모델 인스턴스를 웹과 상호작용 시킨다. (파라미터적용, 훈련, 추론, 성능평가)
-4. 웹서버 종료시킬때, 혹은 저장버튼을 누르면 변경된 모델 인스턴스 저장
-"""
 import time
 import joblib
-import os
 import ast
 
 import pandas as pd
@@ -50,25 +35,9 @@ PATH = os.path.dirname(__file__)
 
 # *중요! 각 csv파일은 무조건 data폴더 안에 있어야합니다.
 def load_data1(df1=None, split=True):
-    """
-    data1을 불러와서 전처리된 데이터셋을 반환 
-    df를 입력하면 전처리만 진행
-
-    전처리:
-    1. 'Sex'컬럼 원핫인코딩
-    2. 수치형 표준화
-
-    args:
-        df1 : 전처리할 데이터프레임
-        split : True이면 전처리후 분리된 데이터 반환
-    returns:
-        split => X_train, X_test, y_train, y_test, data1_ct
-
-        not split => X, y, df (분리 이전데이터)
-    """
-    if df1 is None:
-        file_path = os.path.join(PATH, './data/Regression_data.csv')
-        df1 = pd.read_csv(file_path)
+   
+    if df1 is None: 
+        df1 = pd.read_csv('./data/Regression_data.csv')
 
     num_cols = list(df1.drop(columns=['Sex', 'Rings']))
     cat_cols = ['Sex']
@@ -94,25 +63,9 @@ def load_data1(df1=None, split=True):
     
 
 def load_data2(df2=None, split=True):
-    """
-    data2을 불러와서 전처리된 데이터셋을 반환 
-    df를 입력하면 전처리만 진행
-
-    전처리:
-    .
-0    1. 수치형 표준화
-
-    args:
-        df1 : 전처리할 데이터프레임
-        split : True이면 전처리후 분리된 데이터 반환
-    returns:
-        split => X_train, X_test, y_train, y_test, data1_ct
-
-        not split => X, y, df (분리 이전 데이터)
-    """
+   
     if df2 is None:
-        file_path = os.path.join(PATH, './data/binary_classification_data.csv')
-        df2 = pd.read_csv(file_path)
+        df2 = pd.read_csv('./data/binary_classification_data.csv')
 
     data2_ct = StandardScaler()
     data2_ct.set_output(transform='pandas')
@@ -133,27 +86,9 @@ def load_data2(df2=None, split=True):
         return X, y, df2
 
 def load_data3(df3=None, split=True):
-    """
-    data3을 불러와서 전처리된 데이터셋을 반환  
-    df를 입력하면 전처리만 진행
-
-    전처리:  
-    1. A400컬럼 드랍 drop
-    2. 범주형 원핫인코딩
-    3. 수치형 표준화
-
-    args:
-        df1 : 전처리할 데이터프레임
-        split : True이면 전처리후 분리된 데이터 반환
-    
-    returns:
-        split => X_train, X_test, y_train, y_test, data1_ct
-
-        not split => X, y, df (전처리 이전데이터)
-    """
+   
     if df3 is None:
-        file_path = os.path.join(PATH, './data/mulit_classification_data.csv')
-        df3 = pd.read_csv(file_path)
+        df3 = pd.read_csv('./data/mulit_classification_data.csv')
 
     
     y = df3.loc[:,'Pastry':]
@@ -191,11 +126,7 @@ class Model:
     model_num = None # load_data호출시 모델번호. 
     
     def __init__(self):
-        # params : 모델파라미터 (private)
-        # model : 모델
-        # ct : 입력데이터 전처리기 (private)
-        # features : 독립변수들 리스트
-        # target : 종속변수
+      
         X, y, _ = self.load_data(split=False)
         self.params = {}
         self.model = None
@@ -213,18 +144,18 @@ class Model:
             raise ValueError(f'model_num 이상. 입력값 : {self.model_num}')
             
         # 먼저 전처리기 불러오기
-        file_path = os.path.join(PATH, './data/'+name+'_ct.pkl')
-        if os.path.exists(file_path):
-            self.ct = joblib.load(file_path)
+        file_path_1 ='./data/'+name+'_ct.pkl'
+        if os.path.exists(file_path_1):
+            self.ct = joblib.load(file_path_1)
             print('전처리기 불러오기 성공')
         else:
             print('전처리기 불러오기 실패.. 학습진행')
             self.ct = self.load_data()[-1]
             
         # 모델 불러오기
-        file_path = os.path.join(PATH, './data/'+name+'_BestModel.pkl')
-        if os.path.exists(file_path):
-            self.model = joblib.load(file_path)
+        file_path_model = './data/'+name+'_BestModel.pkl'
+        if os.path.exists(file_path_model):
+            self.model = joblib.load(file_path_model)
             self.params = self.model.get_params()
             print('모델 불러오기 성공')
         else:
@@ -262,16 +193,7 @@ class Model:
     
 
     def _to_frame(self, data, target=False):
-        """
-        내부사용함수. 입력데이터를 모델에 넣을 수 있도록 pd.DataFrame으로 변환해준다.
-        target==True이면 타겟데이터변환, False이면 feature변환 오류나면 None반환  
-
-        args:
-            data : 변환할 데이터 (array-like)
-            target : 타겟데이터를 변환하는건인지 확인
-        returns:
-            DataFrame : 데이터프레임으로 변경된 데이터
-        """
+       
     
         # 이미 DataFrame이면 그대로 반환
         if isinstance(data, pd.DataFrame):
@@ -318,17 +240,7 @@ class Model:
 
 
     def train(self, params=None, df=None):
-        """
-        하이퍼파라미터와 데이터를 받아서 학습된 모델을 반환
-        
-        args:
-            params : 파라미터 목록(dictionary)
-            df : 학습할 데이터프레임 혹은 np.array
-                (없을시 csv불러와서 학습)
-        returns:
-            model : xgb 모델
-            train_time : 훈련소요시간(초)
-        """
+       
 
         model = XGBRegressor(random_state=42,
                              objective='reg:squarederror',
@@ -358,14 +270,7 @@ class Model:
     
 
     def predict(self, X):
-        """
-        dataframe 혹은 array-like(np.ndarray, list, tuple) 형태로 데이터를 받아서 예측  
-
-        args:
-            X : 입력데이터 (pd.DataFrame or array-like)
-        returns:
-            pred : 모델 에측값 (np.ndarray)
-        """
+        
         if not isinstance(X, pd.DataFrame):
             X = self._to_frame(X, target=False)
             if X is None:
@@ -378,19 +283,7 @@ class Model:
     
 
     def performance(self, df=None):
-        """
-        모델의 성능을 평가하는 함수.
-
-        df가 있으면 해당데이터로, 없으면 기본 검증데이터로 평가
-        
-        args:
-            df : 검증 데이터프레임
-        
-        returns:
-            rmse, acc, r2 : 회귀모델인경우  
-
-            1의 precision, 1의 recall, 1의 f1, acc : 이진분류의 경우
-        """
+       
         if df:
             # array-like이면 dataframe으로 변환
             if isinstance(df, (np.ndarray|list|tuple)):
@@ -422,29 +315,19 @@ class Model:
         """
         
         if self.model_num == 1:
-            file_path = os.path.join(PATH, './data/reg_BestModel.pkl')
+            file_path_2 = './data/reg_BestModel.pkl'
         elif self.model_num == 2:
-            file_path = os.path.join(PATH, './data/bin_BestModel.pkl')
+            file_path_2 = './data/bin_BestModel.pkl'
         elif self.model_num == 3:
-            file_path = os.path.join(PATH, './data/multi_BestModel.pkl')
+            file_path_2 = './data/multi_BestModel.pkl'
         else:
             raise ValueError(f'model_num 이상. 값 {self.model_num}')
             
-        joblib.dump(self.model, file_path)
+        joblib.dump(self.model, file_path_2)
 
 
     def make_val_data(self, n_samples:int=100, seed:int=None):
-        """
-        검증용 샘플 데이터프레임을 반환하는 함수
-
-        args:
-            n_samples : 뽑아올 샘플(row)수
-
-            seed : 랜덤시드
-
-        returns:
-            val_df : 검증용 데이터프레임
-        """
+       
         val_df = self.load_data(split=False)[2] # df
         
         if seed:
@@ -506,9 +389,9 @@ class Model3(Model):
         self.model2 = None
 
         # 모델2 불러오기
-        file_path = os.path.join(PATH, './data/multi_BestModel2.pkl')
-        if os.path.exists(file_path):
-            self.model2 = joblib.load(file_path)
+        file_path_model2 = './data/multi_BestModel2.pkl'
+        if os.path.exists(file_path_model2 ):
+            self.model2 = joblib.load(file_path_model2 )
             self.params2 = self.model.get_params()
             print('모델2 불러오기 성공')
         else:
@@ -688,8 +571,7 @@ class Model3(Model):
 
     def save_model(self):
         super().save_model()
-        file_path = os.path.join(PATH, 'data/multi_BestModel2.pkl')
-        joblib.dump(self.model2, file_path)
+        joblib.dump(self.model2, './data/multi_BestModel2.pkl')
         
 
 # # 웹과의 상호작용을 하는 함수
