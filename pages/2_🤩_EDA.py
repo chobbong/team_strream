@@ -18,18 +18,15 @@ st.set_page_config(
 )
 
 st.header("""
- EDA of Data set 1,2,3
+ 데이터 셋 EDA
 """)
 
-st.sidebar.subheader("""
- EDA of Data set 1,2,3
-""")
 
-select_dataset = st.sidebar.selectbox('select a data-set', ['data-1', 'data-2','data-3'])
+tab1, tab2, tab3 = st.tabs(["전복나이예측", "펄서여부예측", "스테인레스결함예측"])
 
-if select_dataset == 'data-1':
+with tab1:
 
-    st.write('### data-1 (Regression_data)')
+    st.write('### 전복나이예측 (Regression_data)')
     st.write("""
     - 4177개의 데이터, 결측치, 중복값 없음, ‘sex’ 컬럼이 범주형 데이터
     - 데이터 분포 히스토그램 : 대부분 정규 분포, 약하게 skewed 분포된 특성들 있음
@@ -75,9 +72,9 @@ if select_dataset == 'data-1':
     
     
 
-if select_dataset == 'data-2':
+with tab2:
 
-    st.write('### data2 (Binary_classification_data)')
+    st.write('### 펄서여부예측 (Binary_classification_data)')
     st.write("""
     - row 17898개, 범주형 데이터, 중복, 결측치 없음
     - 이상치 있는 컬럼 3개
@@ -117,10 +114,9 @@ if select_dataset == 'data-2':
         st.pyplot(plt)
 
     
+with tab3:
 
-if select_dataset == 'data-3':
-
-    st.write('### data3 (Multi_classification_data)')
+    st.write('### 스테인레스결함예측 (Multi_classification_data)')
     st.write("""
     - 데이터 1941개, 중복, 결측치 없음
     - target변수 7개이며, class 비율이 2.8% 부터 34.7% 까지 존재

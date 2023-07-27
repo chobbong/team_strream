@@ -8,6 +8,10 @@ st.set_page_config(
     layout="wide",
 )
 
+st.header("""
+데이터셋 개요
+""")
+
 tab1, tab2, tab3 = st.tabs(["전복나이예측", "펄서여부예측", "스테인레스결함예측"])
 
 with tab1: 
