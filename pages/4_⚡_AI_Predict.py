@@ -202,15 +202,14 @@ class Model:
         self.features = list(X)
         self.target = [y.name] if isinstance(y, pd.Series) else list(y)
 
-        match self.model_num:
-            case 1:
-                name = 'reg'
-            case 2:
-                name = 'bin'
-            case 3:
-                name = 'multi'
-            case _:
-                raise ValueError(f'model_num 이상. 입력값 : {self.model_num}')
+        if self.model_num == 1:
+            name = 'reg'
+        elif self.model_num == 2:
+            name = 'bin'
+        elif self.model_num == 3:
+            name = 'multi'
+        else:
+            raise ValueError(f'model_num 이상. 입력값 : {self.model_num}')
             
         # 먼저 전처리기 불러오기
         file_path = os.path.join(PATH, 'data/'+name+'_ct.pkl')
