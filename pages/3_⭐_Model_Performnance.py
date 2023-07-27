@@ -23,10 +23,6 @@ st.header("""
  Model Perfortmance
 """)
 
-st.sidebar.subheader("""
- Model Perfortmance
-""")
-
 
 data_reg = pd.read_csv('./csv/Regression_data.csv')
 data_bin = pd.read_csv('./csv/binary_classification_data.csv')
@@ -81,9 +77,9 @@ X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(X_reg, y_reg
 # st.write("""Heatmap 2""")
 # st.pyplot(heatmap_2.figure)
 
-select_dataset = st.sidebar.selectbox('select a data-set', ['data-1', 'data-2','data-3'])
+tab1, tab2, tab3 = st.tabs(["전복나이예측", "펄서여부예측", "스테인레스결함예측"])
 
-if select_dataset == 'data-1':
+with tab1:
 
    st.write('### data-1 (Regression_data)')
    select_model = st.selectbox('Select a model', ['XGBoost','LinearRegression', 'Lasso','StandardScaler+GridSearchCV'])
@@ -336,7 +332,7 @@ if select_dataset == 'data-1':
          """
          st.code(code, language='python')
 
-if select_dataset == 'data-2':
+with tab2:
 
    st.write('### data-2 (Binary Classification data)')
    st.write('select_model == "XGBoost"')
@@ -356,7 +352,7 @@ if select_dataset == 'data-2':
    accuracy = 0.9752
    st.write('#### accuracy :', accuracy) 
    
-if select_dataset == 'data-3':
+with tab3:
    st.write('### data-3 (Multi Classification data)')
    st.write('select_model == "XGBoost"')
    st.write("""
