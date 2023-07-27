@@ -67,7 +67,7 @@ def load_data1(df1=None, split=True):
         not split => X, y, df (분리 이전데이터)
     """
     if df1 is None:
-        file_path = os.path.join(PATH, 'data/Regression_data.csv')
+        file_path = os.path.join(PATH, './data/Regression_data.csv')
         df1 = pd.read_csv(file_path)
 
     num_cols = list(df1.drop(columns=['Sex', 'Rings']))
@@ -110,7 +110,7 @@ def load_data2(df2=None, split=True):
         not split => X, y, df (분리 이전 데이터)
     """
     if df2 is None:
-        file_path = os.path.join(PATH, 'data/binary_classification_data.csv')
+        file_path = os.path.join(PATH, './data/binary_classification_data.csv')
         df2 = pd.read_csv(file_path)
 
     data2_ct = StandardScaler()
@@ -151,7 +151,7 @@ def load_data3(df3=None, split=True):
         not split => X, y, df (전처리 이전데이터)
     """
     if df3 is None:
-        file_path = os.path.join(PATH, 'data/mulit_classification_data.csv')
+        file_path = os.path.join(PATH, './data/mulit_classification_data.csv')
         df3 = pd.read_csv(file_path)
 
     
@@ -212,7 +212,7 @@ class Model:
             raise ValueError(f'model_num 이상. 입력값 : {self.model_num}')
             
         # 먼저 전처리기 불러오기
-        file_path = os.path.join(PATH, 'data/'+name+'_ct.pkl')
+        file_path = os.path.join(PATH, './data/'+name+'_ct.pkl')
         if os.path.exists(file_path):
             self.ct = joblib.load(file_path)
             print('전처리기 불러오기 성공')
@@ -221,7 +221,7 @@ class Model:
             self.ct = self.load_data()[-1]
             
         # 모델 불러오기
-        file_path = os.path.join(PATH, 'data/'+name+'_BestModel.pkl')
+        file_path = os.path.join(PATH, './data/'+name+'_BestModel.pkl')
         if os.path.exists(file_path):
             self.model = joblib.load(file_path)
             self.params = self.model.get_params()
@@ -421,11 +421,11 @@ class Model:
         """
         
         if self.model_num == 1:
-            file_path = os.path.join(PATH, 'data/reg_BestModel.pkl')
+            file_path = os.path.join(PATH, './data/reg_BestModel.pkl')
         elif self.model_num == 2:
-            file_path = os.path.join(PATH, 'data/bin_BestModel.pkl')
+            file_path = os.path.join(PATH, './data/bin_BestModel.pkl')
         elif self.model_num == 3:
-            file_path = os.path.join(PATH, 'data/multi_BestModel.pkl')
+            file_path = os.path.join(PATH, './data/multi_BestModel.pkl')
         else:
             raise ValueError(f'model_num 이상. 값 {self.model_num}')
             
@@ -505,7 +505,7 @@ class Model3(Model):
         self.model2 = None
 
         # 모델2 불러오기
-        file_path = os.path.join(PATH, 'data/multi_BestModel2.pkl')
+        file_path = os.path.join(PATH, './data/multi_BestModel2.pkl')
         if os.path.exists(file_path):
             self.model2 = joblib.load(file_path)
             self.params2 = self.model.get_params()
