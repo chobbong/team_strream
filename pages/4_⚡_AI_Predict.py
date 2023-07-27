@@ -650,7 +650,7 @@ with tab2:
         input_6 = st.slider('Excess kurtosis of the DM-SNR curve', -4.0, 40.0, 1.0)
         input_7 = st.slider('Skewness of the DM-SNR curve', 0.0, 122.0, 10.0)
 
-    inputs = [locals().get(f'input_{i}') for i in range(8)]
+    inputs = [input_0, input_1, input_2, input_3, input_4, input_5, input_6, input_7]
     result = model2.predict(inputs)
 
     with col2:
