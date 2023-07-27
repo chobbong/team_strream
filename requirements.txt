@@ -4,6 +4,8 @@ scikit-learn
 matplotlib
 seaborn
 pygwalker
-xgboost
+xgboost ==1.0.2
 os
 joblib
+time
+numba==0.48.0
