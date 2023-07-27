@@ -81,7 +81,7 @@ tab1, tab2, tab3 = st.tabs(["전복나이예측", "펄서여부예측", "스테�
 
 with tab1:
 
-   st.write('### data-1 (Regression_data)')
+   st.write('### 전복나이예측 (Regression_data)')
    select_model = st.selectbox('Select a model', ['XGBoost','LinearRegression', 'Lasso','StandardScaler+GridSearchCV'])
 
    if select_model == 'XGBoost':
@@ -334,7 +334,7 @@ with tab1:
 
 with tab2:
 
-   st.write('### data-2 (Binary Classification data)')
+   st.write('### 펄서여부 예측 (Binary Classification data)')
    st.write('select_model == "XGBoost"')
    st.write("""
    #### best params :      
@@ -353,7 +353,7 @@ with tab2:
    st.write('#### accuracy :', accuracy) 
    
 with tab3:
-   st.write('### data-3 (Multi Classification data)')
+   st.write('### 스테인레스 결함 예측 (Multi Classification data)')
    st.write('select_model == "XGBoost"')
    st.write("""
    #### best params :        
