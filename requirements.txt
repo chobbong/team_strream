@@ -8,3 +8,5 @@ xgboost
 os
 joblib
 time
+pandas
+numpy
