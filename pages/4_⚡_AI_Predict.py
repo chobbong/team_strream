@@ -149,7 +149,7 @@ with tab1:
 
     # 예측
     predicted_size = model1.predict(inputs)
-    predicted_age = predicted_size*1.5
+    predicted_age = predicted_size+1.5
     with col2:
         # 결과 표시
         st.write( '    ')
