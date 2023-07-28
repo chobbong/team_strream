@@ -174,7 +174,7 @@ with tab1:
         st.write( '    ') 
         st.write( '    ') 
         st.write( '    ') 
-        st.write('### 전복나이예측:', predicted_size)
+        st.write('### 전복 고리 갯수 예측:', predicted_size)
 
 with tab2:
     model2 = PulsarPredictor()
