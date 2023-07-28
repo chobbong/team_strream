@@ -169,11 +169,11 @@ class DefectPredictor:
         return prediction
     
 
-tab1, tab2, tab3 = st.tabs(["전복 고리 갯수 예측", "펄서여부예측", "스테인레스강 결함 예측"])
+tab1, tab2, tab3 = st.tabs(["전복나이예측", "펄서여부예측", "스테인레스결함예측"])
 
 with tab1:
 
-    st.subheader('전복 고리 갯수 예측')
+    st.subheader('전복 나이 예측')
 
     # 모델 로드
     model1 = Model1()
@@ -228,7 +228,7 @@ with tab1:
         st.write( '    ') 
         st.write( '    ') 
         st.write( '    ') 
-        st.write('### 전복 고리 갯수 예측:', predicted_size)
+        st.write('### 전복 나이 예측:', predicted_size)
 
 with tab2:
     model2 = PulsarPredictor()
@@ -285,7 +285,7 @@ with tab3:
     data_multi = model3.preprocess_data('./csv/multi_classification_data.csv')
     model3.train_model(data_multi)
 
-    st.subheader('스테인레스강 결함 예측')
+    st.subheader('스테인레스결함 예측')
 
     col1, col2 = st.columns(2)
 
@@ -327,6 +327,6 @@ with tab3:
         st.write( '    ') 
         st.write( '    ') 
         st.write( '    ') 
-        st.write('### The predicted defect is:', predicted_defect)
+        st.write('### 스테인레스 결함:', predicted_defect)
         
 
