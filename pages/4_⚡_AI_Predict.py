@@ -115,11 +115,11 @@ class PulsarPredictor:
         return prediction[0]
     
 
-tab1, tab2 = st.tabs(["전복나이예측", "펄서여부예측"])
+tab1, tab2 = st.tabs(["전복 고리 갯수 예측", "펄서여부예측"])
 
 with tab1:
 
-    st.subheader('전복 나이 예측')
+    st.subheader('전복 고리 갯수 예측')
 
     # 모델 로드
     model1 = Model1()
@@ -149,7 +149,7 @@ with tab1:
 
     # 예측
     predicted_size = model1.predict(inputs)
-    predicted_age = predicted_size+1.5
+ 
     with col2:
         # 결과 표시
         st.write( '    ')
@@ -174,7 +174,7 @@ with tab1:
         st.write( '    ') 
         st.write( '    ') 
         st.write( '    ') 
-        st.write('### 전복나이예측:', predicted_age)
+        st.write('### 전복나이예측:', predicted_size)
 
 with tab2:
     model2 = PulsarPredictor()
