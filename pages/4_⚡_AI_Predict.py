@@ -4,6 +4,7 @@ import numpy as np
 
 import sklearn
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, LogisticRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -12,6 +13,7 @@ from sklearn.feature_selection import RFECV
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+import joblib
 
 import streamlit as st
 
@@ -114,8 +116,60 @@ class PulsarPredictor:
 
         return prediction[0]
     
+class DefectPredictor:
+    def __init__(self):
+        self.clf = None
+    
+    def preprocess_data(self, data_multi):
+        # Drop the 'TypeOfSteel_A400' column
+        data_multi = pd.read_csv('./csv/multi_classification_data.csv')
+        # Drop the 'TypeOfSteel_A400' column
+        data_multi = data_multi.drop(['TypeOfSteel_A400'], axis=1)
+        data_multi = data_multi.drop(['Outside_Global_Index'], axis=1)
 
-tab1, tab2 = st.tabs(["전복 고리 갯수 예측", "펄서여부예측"])
+        # Handle outliers by clipping to the 1.5 IQR range
+        for Feature in data_multi.columns:
+            Q1 = data_multi[Feature].quantile(0.25)
+            Q3 = data_multi[Feature].quantile(0.75)
+            IQR = Q3 - Q1
+            line_down = data_multi[Feature].quantile(0.25) - IQR * 1.5
+            line_up = data_multi[Feature].quantile(0.75) + IQR * 1.5
+            data_multi[Feature] = data_multi[Feature].clip(line_down, line_up)
+
+        return data_multi
+
+    def train_model(self, data_multi):
+        # Split the data into features and targets
+        features = data_multi.drop(['Pastry', 'Z_Scratch', 'K_Scatch', 'Stains', 'Dirtiness', 'Bumps', 'Other_Faults'], axis=1)
+        targets_with_other = data_multi[['Pastry', 'Z_Scratch', 'K_Scatch', 'Stains', 'Dirtiness', 'Bumps', 'Other_Faults']]
+
+        # Split the data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(features, targets_with_other.idxmax(axis=1), test_size=0.2, random_state=42, stratify=targets_with_other.idxmax(axis=1))
+
+        # Define a Gradient Boosting classifier with optimal parameters (Replace with your optimal parameters)
+        self.clf = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=0.3, min_samples_leaf=0.1, max_depth=5, max_features='sqrt', criterion='friedman_mse', subsample=0.9, n_estimators=100)
+
+        # Train the model
+        self.clf.fit(X_train, y_train)
+
+        # Make predictions
+        y_pred = self.clf.predict(X_test)
+
+        # Save the trained model for future use
+        joblib.dump(self.clf, 'clf_model.pkl')
+
+    def predict_defect(self, input_data):
+        # Ensure the input is array-like and reshape it for the model
+        input_data = np.array(input_data).reshape(1, -1)
+        
+        # Make the prediction
+        prediction = self.clf.predict(input_data)
+        
+        # Return the predicted defect
+        return prediction
+    
+
+tab1, tab2, tab3 = st.tabs(["전복 고리 갯수 예측", "펄서여부예측", "스테인레스강 결함 예측"])
 
 with tab1:
 
@@ -187,11 +241,11 @@ with tab2:
 
         input_0 = st.slider('Mean of the integrated profile', 6.0, 190.0, 1.0)
         input_1 = st.slider('Standard deviation of the integrated profile',24.0, 100.0, 1.0)
-        input_2 = st.slider('Excess kurtosis of the integrated profile', -2.0, 10.0, 0.1)
-        input_3 = st.slider('Skewness of the integrated profile', -2.0, 70.0, 1.0)
+        input_2 = st.slider('Excess kurtosis of the integrated profile', 0.0, 10.0, 0.1)
+        input_3 = st.slider('Skewness of the integrated profile', 0.0, 70.0, 1.0)
         input_4 = st.slider('Mean of the DM-SNR curve ', 0.0, 220.0, 1.0)
         input_5 = st.slider('Standard deviation of the DM-SNR curve', 7.0, 110.0, 1.0)
-        input_6 = st.slider('Excess kurtosis of the DM-SNR curve', -4.0, 40.0, 1.0)
+        input_6 = st.slider('Excess kurtosis of the DM-SNR curve', 0.0, 40.0, 1.0)
         input_7 = st.slider('Skewness of the DM-SNR curve', 0.0, 122.0, 10.0)
 
     inputs = [input_0, input_1, input_2, input_3, input_4, input_5, input_6, input_7]
@@ -224,3 +278,55 @@ with tab2:
             st.write('### 펄서 여부 예측 : 펄서임')
         else:
             st.write('### 펄서 여부 예측 : 펄서 아님')
+
+with tab3:
+
+    model3 = DefectPredictor()
+    data_multi = model3.preprocess_data('./csv/multi_classification_data.csv')
+    model3.train_model(data_multi)
+
+    st.subheader('스테인레스강 결함 예측')
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        # Create sliders for each feature
+        input_0 = st.slider('X_Minimum', 0.0, 100.0, 1.0) #1
+        input_1 = st.slider('X_Maximum', 0.0, 100.0, 1.0) #2
+        input_2 = st.slider('Y_Minimum', 0.0, 100.0, 1.0) #3
+        input_3 = st.slider('Y_Maximum', 0.0, 100.0, 1.0) #4
+        input_4 = st.slider('Pixels_Areas', 0.0, 100.0, 1.0) #5
+        input_5 = st.slider('X_Perimeter', 0.0, 100.0, 1.0) #6
+        input_6 = st.slider('Y_Perimeter', 0.0, 100.0, 1.0) #7
+        input_7 = st.slider('Sum_of_Luminosity', 0.0, 100.0, 1.0) #8
+        input_8 = st.slider('Minimum_of_Luminosity', 0.0, 100.0, 1.0) #9
+        input_9 = st.slider('Maximum_of_Luminosity', 0.0, 100.0, 1.0) #10
+        input_10 = st.slider('Length_of_Conveyer', 0.0, 100.0, 1.0) #11
+        input_11 = st.slider('TypeOfSteel_A300', 0.0, 1.0, 1.0) #12
+        input_12 = st.slider('Steel_Plate_Thickness', 0.0, 100.0, 1.0) #13
+        input_13 = st.slider('Edges_Index', 0.0, 1.0, 0.01) #14
+        input_14 = st.slider('Empty_Index', 0.0, 1.0, 0.01) #15
+        input_15 = st.slider('Square_Index', 0.0, 1.0, 0.01) #16
+        input_16 = st.slider('Outside_X_Index', 0.0, 1.0, 0.01) #17
+        input_17 = st.slider('Edges_X_Index', 0.0, 1.0, 0.01) #18
+        input_18 = st.slider('Edges_Y_Index', 0.0, 1.0, 0.01) #19
+        input_19 = st.slider('LogOfAreas', 0.0, 100.0, 1.0) #20
+        input_20 = st.slider('Log_X_Index', 0.0, 100.0, 1.0) #21
+        input_21 = st.slider('Log_Y_Index', 0.0, 100.0, 1.0) #22
+        input_22 = st.slider('Orientation_Index', 0.0, 1.0, 0.01) #23
+        input_23 = st.slider('Luminosity_Index', 0.0, 1.0, 0.01) #24
+        input_24 = st.slider('SigmoidOfAreas', 0.0, 1.0, 0.01) #25
+
+        # Gather all inputs
+        inputs = [input_0, input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20, input_21, input_22, input_23, input_24]
+
+    with col2:
+  
+        predicted_defect = model3.predict_defect(inputs)
+        st.write( '    ') 
+        st.write( '    ') 
+        st.write( '    ') 
+        st.write( '    ') 
+        st.write('### The predicted defect is:', predicted_defect)
+        
+
