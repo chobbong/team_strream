@@ -228,7 +228,7 @@ with tab1:
         st.write( '    ') 
         st.write( '    ') 
         st.write( '    ') 
-        st.write('### 전복 나이 예측:', predicted_size)
+        st.write('### 전복 나이 예측:', predicted_size+1.5)
 
 with tab2:
     model2 = PulsarPredictor()
