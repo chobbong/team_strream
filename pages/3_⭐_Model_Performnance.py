@@ -354,16 +354,14 @@ with tab2:
       st.write('select_model == "XGBoost"')
       st.write("""
       #### best params :      
-      smote_k': 2,       
-      'enn_k': 6,     
-      'learning_rate': 0.03233685808565227,     
-      'n_estimators': 1200,     
-      'max_depth': 20,     
-      'colsample_bytree': 0.5,     
-      'l2': 0.004666963217784473,     
-      'l1': 0.002792083422830542,     
-      'gamma': 0.036934880241175236,     
-      'scale_pos_weight': 7.0    
+      'learning_rate': 0.07599786434716908  
+      'n_estimators': 1400  
+      'max_depth': 19  
+      'colsample_bytree': 0.5  
+      'l2': 0.007915306338055306   
+      'l1': 0.007964684761239524  
+      'gamma': 0.008710642511159737  
+      'scale_pos_weight': 0.9  
       """)
       accuracy = 0.981
       st.write('#### accuracy :', accuracy) 
