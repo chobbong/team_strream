@@ -427,11 +427,12 @@ with tab2:
       
    
 with tab3:
+
    st.write('### 스테인레스 결함 예측 (Multi Classification data)')
 
-   select_model_3 = st.selectbox('Select a model', ['XGBoost','LinearRegression'])
+   select_model_3 = st.selectbox('Select a model', ['XGBoost_model3','LinearRegression_model3'])
 
-   if select_model_3 == 'XGBoost':
+   if select_model_3 == 'XGBoost_model3':
 
       st.write('select_model == "XGBoost"')
       st.write("""
@@ -449,7 +450,7 @@ with tab3:
       st.write('#### binary accuracy :', bin_accuracy)
       st.write('#### multi accuracy :', multi_accuracy) 
 
-   elif select_model_3 == 'LinearRegression':
+   elif select_model_3 == 'LinearRegression_model3':
 
       st.write('select_model == "LinearRegression"')
       st.write("""
