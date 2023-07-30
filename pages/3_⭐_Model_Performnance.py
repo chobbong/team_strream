@@ -347,38 +347,121 @@ with tab1:
 with tab2:
 
    st.write('### 펄서여부 예측 (Binary Classification data)')
-   st.write('select_model == "XGBoost"')
-   st.write("""
-   #### best params :      
-   smote_k': 2,       
-   'enn_k': 6,     
-   'learning_rate': 0.03233685808565227,     
-   'n_estimators': 1200,     
-   'max_depth': 20,     
-   'colsample_bytree': 0.5,     
-   'l2': 0.004666963217784473,     
-   'l1': 0.002792083422830542,     
-   'gamma': 0.036934880241175236,     
-   'scale_pos_weight': 7.0    
-   """)
-   accuracy = 0.981
-   st.write('#### accuracy :', accuracy) 
+
+   select_model_2 = st.selectbox('Select a model', ['XGBoost','LinearRegression'])
+
+   if select_model_2 == 'XGBoost':
+      st.write('select_model == "XGBoost"')
+      st.write("""
+      #### best params :      
+      smote_k': 2,       
+      'enn_k': 6,     
+      'learning_rate': 0.03233685808565227,     
+      'n_estimators': 1200,     
+      'max_depth': 20,     
+      'colsample_bytree': 0.5,     
+      'l2': 0.004666963217784473,     
+      'l1': 0.002792083422830542,     
+      'gamma': 0.036934880241175236,     
+      'scale_pos_weight': 7.0    
+      """)
+      accuracy = 0.981
+      st.write('#### accuracy :', accuracy) 
+   
+   elif select_model_2 == 'LinearRegression':
+      st.write('select_model == "LinearRegression"')
+      accuracy_li = 0.979
+      precision_li = 0.9359
+      recall_li = 0.8193
+      f1_li = 0.8738
+      st.write('#### accuracy :', accuracy_li)
+      st.write('#### precision :', precision_li)
+      st.write('#### recall :', recall_li)
+      st.write('#### f1 :', f1_li)
+   
+      if st.button("LinearRegression code 보기"):
+         code = """
+         # Check for missing values
+         missing_values = data_bin.isnull().sum()
+
+         # Display the number of missing values per column
+         missing_values
+
+         # Define the features and the target
+         X = data_bin.drop("target_class", axis=1)
+         y = data_bin["target_class"]
+
+         # Initialize a new StandardScaler instance
+         scaler = StandardScaler()
+
+         # Fit the scaler to the features and transform
+         X_scaled = scaler.fit_transform(X)
+
+         # Convert the scaled features into a DataFrame
+         X_scaled = pd.DataFrame(X_scaled, columns=X.columns)
+
+         # Split the data into a training set and a test set
+         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+         # Check the shapes of the resulting datasets
+         X_train.shape, X_test.shape, y_train.shape, y_test.shape
+
+         # Initialize a new logistic regression model
+         model = LogisticRegression(random_state=42)
+
+         # Fit the model to the training data
+         model.fit(X_train, y_train)
+
+         # Use the model to make predictions on the test data
+         y_pred = model.predict(X_test)
+
+         # Calculate the metrics
+         accuracy = accuracy_score(y_test, y_pred)
+         precision = precision_score(y_test, y_pred)
+         recall = recall_score(y_test, y_pred)
+         f1 = f1_score(y_test, y_pred)
+         roc_auc = roc_auc_score(y_test, model.predict_proba(X_test)[:, 1])  # Compute ROC AUC from prediction scores
+         """
+         st.code(code, language='python')
+
+      
    
 with tab3:
    st.write('### 스테인레스 결함 예측 (Multi Classification data)')
-   st.write('select_model == "XGBoost"')
-   st.write("""
-   #### best params :        
-  'learning_rate': 0.07522487380833985,   
-  'n_estimators': 250,   
-  'max_depth': 4,   
-  'colsample_bytree': 0.6000000000000001,   
-  'l2': 0.001648272236870337,   
-  'l1': 0.01657588037413299,   
-  'gamma': 0.002792373320363197  
-   """)
-   bin_accuracy = 0.844
-   multi_accuracy = 0.934
-   st.write('#### binary accuracy :', bin_accuracy)
-   st.write('#### multi accuracy :', multi_accuracy) 
-      
+
+   select_model_3 = st.selectbox('Select a model', ['XGBoost','LinearRegression'])
+
+   if select_model_3 == 'XGBoost':
+
+      st.write('select_model == "XGBoost"')
+      st.write("""
+      #### best params :        
+   'learning_rate': 0.07522487380833985,   
+   'n_estimators': 250,   
+   'max_depth': 4,   
+   'colsample_bytree': 0.6000000000000001,   
+   'l2': 0.001648272236870337,   
+   'l1': 0.01657588037413299,   
+   'gamma': 0.002792373320363197  
+      """)
+      bin_accuracy = 0.844
+      multi_accuracy = 0.934
+      st.write('#### binary accuracy :', bin_accuracy)
+      st.write('#### multi accuracy :', multi_accuracy) 
+
+   elif select_model_3 == 'LinearRegression':
+
+      st.write('select_model == "LinearRegression"')
+      st.write("""
+      #### best params :
+      "learning_rate":  [0.2],
+      "min_samples_split": [0.25],
+      "min_samples_leaf": [0.1],
+      "max_depth":[5],
+      "max_features":["sqrt"],
+      "criterion":["friedman_mse"],
+      "subsample":[0.95],
+      "n_estimators": [10]
+      """)
+      mo3_li_accuracy = 0.76
+      st.write('#### accuracy :', mo3_li_accuracy)
