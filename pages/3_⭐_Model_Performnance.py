@@ -90,10 +90,10 @@ with tab1:
       st.write('#### acc :', accuracy_nn) 
       st.write('#### the performance metrics')
       st.write("""
-      MAE: 1.4769553656213021
-      MSE: 4.476184649680055
-      RMSE: 2.1156995650800834
-      R2 Score: 0.5865036677494322
+      MAE: 1.4769553656213021  
+      MSE: 4.476184649680055  
+      RMSE: 2.1156995650800834  
+      R2 Score: 0.5865036677494322  
        """)
 
    if select_model == 'XGBoost':
