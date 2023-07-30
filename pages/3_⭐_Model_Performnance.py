@@ -455,14 +455,14 @@ with tab3:
       st.write('select_model == "LinearRegression"')
       st.write("""
       #### best params :
-      "learning_rate":  [0.2],
-      "min_samples_split": [0.25],
-      "min_samples_leaf": [0.1],
-      "max_depth":[5],
-      "max_features":["sqrt"],
-      "criterion":["friedman_mse"],
-      "subsample":[0.95],
-      "n_estimators": [10]
+      "learning_rate": 0.2  
+      "min_samples_split": 0.25  
+      "min_samples_leaf": 0.1     
+      "max_depth":5  
+      "max_features":"sqrt"    
+      "criterion":"friedman_mse"  
+      "subsample":0.95   
+      "n_estimators": 10  
       """)
       mo3_li_accuracy = 0.76
       st.write('#### accuracy :', mo3_li_accuracy)
