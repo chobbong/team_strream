@@ -82,7 +82,19 @@ tab1, tab2, tab3 = st.tabs(["전복나이예측", "펄서여부예측", "스테�
 with tab1:
 
    st.write('### 전복나이예측 (Regression_data)')
-   select_model = st.selectbox('Select a model', ['XGBoost','LinearRegression', 'Lasso','StandardScaler+GridSearchCV'])
+   select_model = st.selectbox('Select a model', ['regression_nn','XGBoost','LinearRegression', 'Lasso','StandardScaler+GridSearchCV'])
+
+   if select_model == 'regression_nn':
+      st.subheader("""regression_nn""")
+      accuracy_nn = 0.859
+      st.write('#### acc :', accuracy_nn) 
+      st.write('#### the performance metrics')
+      st.write("""
+      MAE: 1.4769553656213021
+      MSE: 4.476184649680055
+      RMSE: 2.1156995650800834
+      R2 Score: 0.5865036677494322
+       """)
 
    if select_model == 'XGBoost':
         
@@ -349,7 +361,7 @@ with tab2:
    'gamma': 0.036934880241175236,     
    'scale_pos_weight': 7.0    
    """)
-   accuracy = 0.9752
+   accuracy = 0.981
    st.write('#### accuracy :', accuracy) 
    
 with tab3:
