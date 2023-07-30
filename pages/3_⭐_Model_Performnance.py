@@ -436,13 +436,13 @@ with tab3:
       st.write('select_model == "XGBoost"')
       st.write("""
       #### best params :        
-   'learning_rate': 0.07522487380833985,   
-   'n_estimators': 250,   
-   'max_depth': 4,   
-   'colsample_bytree': 0.6000000000000001,   
-   'l2': 0.001648272236870337,   
-   'l1': 0.01657588037413299,   
-   'gamma': 0.002792373320363197  
+      'learning_rate': 0.07522487380833985,   
+      'n_estimators': 250,   
+      'max_depth': 4,   
+      'colsample_bytree': 0.6000000000000001,   
+      'l2': 0.001648272236870337,   
+      'l1': 0.01657588037413299,   
+      'gamma': 0.002792373320363197  
       """)
       bin_accuracy = 0.844
       multi_accuracy = 0.934
