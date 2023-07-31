@@ -84,6 +84,95 @@ with tab1:
    st.write('### 전복나이예측 (Regression_data)')
    select_model = st.selectbox('Select a model', ['regression_nn','XGBoost','LinearRegression', 'Lasso','StandardScaler+GridSearchCV'])
 
+   
+
+   if select_model == 'XGBoost':
+        
+      XGB_rmse = 2.124
+      XGB_acc = 0.852
+      st.write("""
+      ### XGBoost
+      """)
+      st.write("""
+      **best params**   
+      'learning_rate': 0.02087425763287998   
+      'n_estimators': 1550  
+      'max_depth': 17    
+      'colsample_bytree': 0.5    
+      'l2': 10.670146505870857    
+      'l1': 0.0663394675391197     
+      'gamma': 9.015017136084957  
+      """)
+      st.write('#### rmse :', XGB_rmse) 
+      st.write('#### acc :', XGB_acc) 
+      st.image('./img/xgb.png')
+   
+      if st.button("XGBoost code 보기"):
+         code = """
+      
+         # XGBRegressor 튜닝
+
+         def reg_xgb_model(trial, X_train, X_test, y_train, y_test):
+            model_params = {
+               'learning_rate':trial.suggest_float('learning_rate', 0.0001, 1.0, log=True),
+               'n_estimators':trial.suggest_int('n_estimators', 100, 2000, step=50),
+               'max_depth':trial.suggest_int('max_depth', 4, 20),
+               'colsample_bytree':trial.suggest_float('colsample_bytree', 0.5, 1.0, step=0.1),
+               'reg_lambda':trial.suggest_float('l2', 0.001, 100.0, log=True),
+               'reg_alpha':trial.suggest_float('l1', 0.001, 100.0, log=True),
+               'gamma':trial.suggest_float('gamma', 0.001, 100.0, log=True),
+            }
+
+            model = XGBRegressor(random_state=42,
+                                 objective='reg:squarederror',
+                                 eval_metric='rmse',
+                                 tree_method='gpu_hist',
+                                 gpu_id=0,
+                                 early_stopping_rounds=30,
+                                 **model_params)
+            
+            model.fit(X_train, y_train,
+                     eval_set=[(X_test, y_test)],
+                     verbose=0)
+            
+            return model
+
+         def reg_xgb_objective(trial, X_train, X_test, y_train, y_test):
+            
+            model = reg_xgb_model(trial, X_train, X_test, y_train, y_test)
+            rmse = mean_squared_error(y_test, model.predict(X_test), squared=False)
+
+            return rmse
+
+         reg_xgb_best = reg_xgb_model(reg_xgb_study.best_trial, X1_train, X1_test, y1_train, y1_test)
+
+         def reg_performance(model, X_test, y_test=None, plot=False):
+            y_pred = pd.Series(model.predict(X_test), index=y_test.index)
+            rmse = mean_squared_error(y_test, y_pred, squared=False)
+            acc = np.mean(1-abs((y_pred - y_test) / y_test))
+            r2 = r2_score()
+            
+            if plot==True:
+               # y_test의 target 크기별 예측값이 어떤지 확인
+               y_test = y_test.sort_values()
+               y_pred = y_pred[y_test.index]
+
+               print(f'rmse : {rmse:.3f}\nacc : {acc:.3f}')
+               plt.figure(figsize=(12,6))
+               plt.plot(y_test.reset_index(drop=True), alpha=0.7, label='y_true')
+               plt.plot(y_pred.reset_index(drop=True), alpha=0.7, label='y_pred')
+               plt.ylabel('Rings', fontsize=14)
+               plt.xlabel('scale order(ascending)', fontsize=14)
+               plt.title('True vs Prediction\n(by ascending target value)', fontsize=14)
+               plt.legend()
+               plt.show()
+            else:
+               return rmse, acc
+
+         reg_performance(reg_xgb_best, X1_test, y1_test, plot=True)
+         """
+         st.code(code, language='python')
+
    if select_model == 'regression_nn':
       st.subheader("""regression_nn""")
       accuracy_nn = 0.862
@@ -187,93 +276,6 @@ with tab1:
          # Calculate 1 - MAPE
          accuracy = 1 - mape
                   """
-         st.code(code, language='python')
-
-   if select_model == 'XGBoost':
-        
-      XGB_rmse = 2.124
-      XGB_acc = 0.852
-      st.write("""
-      ### XGBoost
-      """)
-      st.write("""
-      **best params**   
-      'learning_rate': 0.02087425763287998   
-      'n_estimators': 1550  
-      'max_depth': 17    
-      'colsample_bytree': 0.5    
-      'l2': 10.670146505870857    
-      'l1': 0.0663394675391197     
-      'gamma': 9.015017136084957  
-      """)
-      st.write('#### rmse :', XGB_rmse) 
-      st.write('#### acc :', XGB_acc) 
-      st.image('./img/xgb.png')
-   
-      if st.button("XGBoost code 보기"):
-         code = """
-      
-         # XGBRegressor 튜닝
-
-         def reg_xgb_model(trial, X_train, X_test, y_train, y_test):
-            model_params = {
-               'learning_rate':trial.suggest_float('learning_rate', 0.0001, 1.0, log=True),
-               'n_estimators':trial.suggest_int('n_estimators', 100, 2000, step=50),
-               'max_depth':trial.suggest_int('max_depth', 4, 20),
-               'colsample_bytree':trial.suggest_float('colsample_bytree', 0.5, 1.0, step=0.1),
-               'reg_lambda':trial.suggest_float('l2', 0.001, 100.0, log=True),
-               'reg_alpha':trial.suggest_float('l1', 0.001, 100.0, log=True),
-               'gamma':trial.suggest_float('gamma', 0.001, 100.0, log=True),
-            }
-
-            model = XGBRegressor(random_state=42,
-                                 objective='reg:squarederror',
-                                 eval_metric='rmse',
-                                 tree_method='gpu_hist',
-                                 gpu_id=0,
-                                 early_stopping_rounds=30,
-                                 **model_params)
-            
-            model.fit(X_train, y_train,
-                     eval_set=[(X_test, y_test)],
-                     verbose=0)
-            
-            return model
-
-         def reg_xgb_objective(trial, X_train, X_test, y_train, y_test):
-            
-            model = reg_xgb_model(trial, X_train, X_test, y_train, y_test)
-            rmse = mean_squared_error(y_test, model.predict(X_test), squared=False)
-
-            return rmse
-
-         reg_xgb_best = reg_xgb_model(reg_xgb_study.best_trial, X1_train, X1_test, y1_train, y1_test)
-
-         def reg_performance(model, X_test, y_test=None, plot=False):
-            y_pred = pd.Series(model.predict(X_test), index=y_test.index)
-            rmse = mean_squared_error(y_test, y_pred, squared=False)
-            acc = np.mean(1-abs((y_pred - y_test) / y_test))
-            r2 = r2_score()
-            
-            if plot==True:
-               # y_test의 target 크기별 예측값이 어떤지 확인
-               y_test = y_test.sort_values()
-               y_pred = y_pred[y_test.index]
-
-               print(f'rmse : {rmse:.3f}\nacc : {acc:.3f}')
-               plt.figure(figsize=(12,6))
-               plt.plot(y_test.reset_index(drop=True), alpha=0.7, label='y_true')
-               plt.plot(y_pred.reset_index(drop=True), alpha=0.7, label='y_pred')
-               plt.ylabel('Rings', fontsize=14)
-               plt.xlabel('scale order(ascending)', fontsize=14)
-               plt.title('True vs Prediction\n(by ascending target value)', fontsize=14)
-               plt.legend()
-               plt.show()
-            else:
-               return rmse, acc
-
-         reg_performance(reg_xgb_best, X1_test, y1_test, plot=True)
-         """
          st.code(code, language='python')
 
    elif select_model == 'LinearRegression':
