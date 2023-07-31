@@ -90,10 +90,10 @@ with tab1:
       st.write('#### acc :', accuracy_nn) 
       st.write('#### the performance metrics')
       st.write("""
-      MAE: 1.4418711713626624
-      MSE: 4.2280861108604055
-      RMSE: 2.0562310451066548 
-      R2 Score: 0.609422256652145  
+      MAE: 1.4418711713626624  
+      MSE: 4.2280861108604055  
+      RMSE: 2.0562310451066548   
+      R2 Score: 0.609422256652145    
        """)
       
       if st.button("regression_nn code 보기"):
